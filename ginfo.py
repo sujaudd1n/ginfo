@@ -22,7 +22,25 @@ class Ginfo_window(Gtk.Window):
 
 
         self.add(self.app)
- 
+
+
+    def request_data(self, widget):
+        self.info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        q = self.query_field.get_text()
+        endpoint = f"https://api.github.com/users/{q}"
+        res = requests.get(endpoint)
+        if (res.status_code == 200):
+            label = Gtk.Label(label="Success")
+            self.info_box.pack_start(label, True, True, 0)
+        else:
+            label = Gtk.Label(label="Error")
+            self.info_box.pack_start(label, True, True, 0)
+
+        self.info_box.show_all()
+
+        self.app.pack_start(self.info_box, True, True, 0)
+        
 
 window = Ginfo_window()
 window.connect("destroy", Gtk.main_quit)
